@@ -1,8 +1,15 @@
 import random
 import time
-import ctypes
-kernel32 = ctypes.windll.kernel32
-kernel32.SetConsoleMode(kernel32.GetStdHandle(-11), 7)
+
+
+try:
+    import ctypes
+    kernel32 = ctypes.windll.kernel32
+    kernel32.SetConsoleMode(kernel32.GetStdHandle(-11), 7)
+    fancy_console = True
+except AttributeError:
+    fancy_console = False
+    print("Not on windows")
 
 
 def error():
@@ -65,7 +72,9 @@ for i in range(10):
     end = time.perf_counter()
     answers_times.append(end - start)
 
-    print(CURSOR_UP_ONE + "\x1b[30C", flush=True, end="")
+    if fancy_console:
+        print(CURSOR_UP_ONE + "\x1b[30C", flush=True, end="")
+
     try:
         answer = int(answer)
     except ValueError:
@@ -76,9 +85,9 @@ for i in range(10):
         n_right += 1
     else:
         print(f"Kļūda, atbilde bija {right_answer}")
-    #print(CURSOR_UP_ONE + ERASE_LINE, flush=True, end="")
 
-print(CURSOR_UP_ONE + ERASE_LINE, flush=True, end="\r")
+if fancy_console:
+    print(CURSOR_UP_ONE + ERASE_LINE, flush=True, end="\r")
 
 print(f"{n_right}/{len(answers_times)}")
 print(f"Videjais laiks atbildem: {sum(answers_times)/len(answers_times):6f}±0.000005s")
