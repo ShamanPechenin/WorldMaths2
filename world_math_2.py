@@ -77,7 +77,6 @@ for i in range(10):
     else:
         print(f"Kļūda, atbilde bija {right_answer}")
     #print(CURSOR_UP_ONE + ERASE_LINE, flush=True, end="")
-    time.sleep(1)
 
 print(CURSOR_UP_ONE + ERASE_LINE, flush=True, end="\r")
 
