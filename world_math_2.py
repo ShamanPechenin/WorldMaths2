@@ -99,16 +99,16 @@ if fancy_console:
 mean_time = sum(answers_times)/len(answers_times)
 print(f"{n_right}/{len(answers_times)}")
 print(f"Videjais laiks atbildem: {mean_time:6f}±0.000005s")
-name = input("Ievadiet savu vārdu: ")
 
 if leaderboard is not None:
+    name = input("Ievadiet savu vārdu: ")
     leaderboard["stats"].append({"name": name, "accuracy": n_right/len(answers_times), "time": mean_time})
     with open("maths_leaderboard.json", 'w') as file:
         file.write(json.dumps(leaderboard, indent=2))
 
-print("--------------------------------------------------------------\nRekordu tabula:")
-results = leaderboard["stats"]
-results = sorted(results, key=lambda x: x["time"])
-for i, player in enumerate(results[:10]):
-    print(f"{i}. vieta  {player['name']}:   {player['time']}")
-print("--------------------------------------------------------------")
+    print("--------------------------------------------------------------\nRekordu tabula:")
+    results = leaderboard["stats"]
+    results = sorted(results, key=lambda x: x["time"])
+    for i, player in enumerate(results[:10]):
+        print(f"{i}. vieta  {player['name']}:   {player['time']:6f}s")
+    print("--------------------------------------------------------------")
