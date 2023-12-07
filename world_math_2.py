@@ -22,7 +22,7 @@ try:
     with open("maths_leaderboard.json", 'r+') as file:
         leaderboard = json.loads(file.read())
 except json.decoder.JSONDecodeError:
-    leaderboard = {"stats": []}
+    leaderboard = {f"stats{i}": [] for i in range(8)}
 except FileNotFoundError:
     leaderboard = None
 
@@ -32,7 +32,6 @@ SQRT -(WORLD MATHS^2) v0.1 DEV BUILD
 (c) MAKSIMS, ARTJOMS, SERGEJS, KIRILS INC. ALL RIGHTS RESERVED
 --------------------------------------------------------------
 """
-
 CURSOR_UP_ONE = '\x1b[1A'
 ERASE_LINE = '\x1b[2K'
 
@@ -102,13 +101,12 @@ print(f"Videjais laiks atbildem: {mean_time:6f}±0.000005s")
 
 if leaderboard is not None:
     name = input("Ievadiet savu vārdu: ")
-    leaderboard["stats"].append({"name": name, "accuracy": n_right/len(answers_times), "time": mean_time})
+    leaderboard[f"stats{difficulty}"].append({"name": name, "accuracy": n_right/len(answers_times), "time": mean_time})
+    leaderboard[f"stats{difficulty}"] = sorted(leaderboard[f"stats{difficulty}"], key=lambda x: x["time"])[:10]
     with open("maths_leaderboard.json", 'w') as file:
         file.write(json.dumps(leaderboard, indent=2))
 
-    print("--------------------------------------------------------------\nRekordu tabula:")
-    results = leaderboard["stats"]
-    results = sorted(results, key=lambda x: x["time"])
-    for i, player in enumerate(results[:10]):
-        print(f"{i}. vieta  {player['name']}:   {player['time']:6f}s")
+    print(f"--------------------------------------------------------------\nRekordu tabula grūtībai {difficulty}:")
+    for i, player in enumerate(leaderboard[f"stats{difficulty}"]):
+        print(f"{i+1}. vieta  {player['name']}:   {player['time']:6f}s")
     print("--------------------------------------------------------------")
