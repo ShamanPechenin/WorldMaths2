@@ -60,18 +60,21 @@ print(f"Maksimālais skaitlis: {max_nums}; Atņemšana: {'ir' if subtraction_all
 n_right = 0
 answers_times = []
 
-for i in range(10):
-    num_1 = random.randint(0, max_nums)
-    num_2 = random.randint(0, max_nums)
-    if num_2 > num_1:
-        num_1, num_2 = num_2, num_1
+i = 0
+new_nums = True
+while i < 10:
+    if new_nums:
+        num_1 = random.randint(0, max_nums)
+        num_2 = random.randint(0, max_nums)
+        if num_2 > num_1:
+            num_1, num_2 = num_2, num_1
 
-    if subtraction_allowed and random.randint(0, 1) == 1:
-        subtract = True
-        right_answer = num_1 - num_2
-    else:
-        subtract = False
-        right_answer = num_1 + num_2
+        if subtraction_allowed and random.randint(0, 1) == 1:
+            subtract = True
+            right_answer = num_1 - num_2
+        else:
+            subtract = False
+            right_answer = num_1 + num_2
 
     start = time.perf_counter()
     answer = input(f"Jautājums {i}: {num_1}{'-' if subtract else '+'}{num_2}=")
@@ -84,13 +87,18 @@ for i in range(10):
     try:
         answer = int(answer)
     except ValueError:
-        error()
+        new_nums = False
+        print("\r", flush=True, end="")
+        continue
 
     if answer == right_answer:
         print("Pareizi!")
         n_right += 1
     else:
         print(f"Kļūda, atbilde bija {right_answer}")
+    i += 1
+    new_nums = True
+    time.sleep(0.5)
 
 if fancy_console:
     print(CURSOR_UP_ONE + ERASE_LINE, flush=True, end="\r")
