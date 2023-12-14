@@ -48,12 +48,15 @@ DIFFICULTY_LOOKUP = [  # Max numbers, Subtraction allowed
 
 print(LOGO)
 
-difficulty = input("ievadiet grūtības pakāpi no 0 līdz 7: ")
-try:
-    difficulty = int(difficulty)
-    max_nums, subtraction_allowed = DIFFICULTY_LOOKUP[difficulty]
-except ValueError:
-    error()
+while True:
+    difficulty = input("ievadiet grūtības pakāpi no 0 līdz 7: ")
+    try:
+        difficulty = min(max(int(difficulty), 0), 7)
+        max_nums, subtraction_allowed = DIFFICULTY_LOOKUP[difficulty]
+        break
+    except ValueError:
+        print("\r", flush=True, end="")
+
 
 print(f"Maksimālais skaitlis: {max_nums}; Atņemšana: {'ir' if subtraction_allowed else 'nav'}")
 
